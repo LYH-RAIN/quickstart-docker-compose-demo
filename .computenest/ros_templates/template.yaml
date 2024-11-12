@@ -1,7 +1,4 @@
 ROSTemplateFormatVersion: '2015-09-01'
-Description:
-  en: DockerCompose service template
-  zh-cn: DockerCompose服务模板
 Conditions:
   CreateVpcConditions:
     Fn::Equals:
