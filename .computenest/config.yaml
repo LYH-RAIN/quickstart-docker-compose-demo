@@ -20,6 +20,8 @@ Service:
         Url: 'ros_templates/template.yaml'
         AllowedRegions:
           - cn-hangzhou
+          - cn-shanghai
+          - cn-beijing
   ServiceType: private
   ServiceInfo:
     Locale: zh-CN
@@ -32,4 +34,28 @@ Artifact:
     ArtifactProperty:
       RegionId: cn-hangzhou
       Url: 'resources/artifact_resources/docker_compose.tar'
+  Artifact_2:
+    ArtifactType: AcrImage
+    ArtifactName: AcrImage-halo-halo
+    ArtifactProperty:
+      RepoName: ${AcrImageBuilder.AcrImage_1.RepoName}
+      Tag: ${AcrImageBuilder.AcrImage_1.Tag}
+      RepoType: Public
+  Artifact_3:
+    ArtifactType: AcrImage
+    ArtifactName: AcrImage-postgres
+    ArtifactProperty:
+      RepoName: ${AcrImageBuilder.AcrImage_2.RepoName}
+      Tag: ${AcrImageBuilder.AcrImage_2.Tag}
+      RepoType: Public
 AcrImageBuilder:
+  AcrImage_1:
+    BuildType: DockerRepo
+    DockerRepoUrl: registry.fit2cloud.com/halo/halo:2.16
+    RepoName: halo/halo
+    Tag: 2.16
+  AcrImage_2:
+    BuildType: DockerRepo
+    DockerRepoUrl: postgres:15.4
+    RepoName: postgres
+    Tag: 15.4

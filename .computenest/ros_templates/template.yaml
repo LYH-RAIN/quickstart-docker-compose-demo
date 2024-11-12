@@ -190,6 +190,11 @@ Parameters:
           Fn::Equals:
             - ExistingVPC
             - ${VpcOption}
+  Password:
+    Type: String
+    AssociationProperty: ALIYUN::ECS::Instance::Password
+    Label: 密码
+    NoEcho: True
 Resources:
   # 新建vpc
   EcsVpc:
@@ -276,14 +281,6 @@ Resources:
       CommandContent:
         Fn::Sub:
           - |
-            dockerJson='{{ computenest::acr::dockerconfigjson }}'
-            decodeDockerJson=$(echo $dockerJson | base64 -d)
-            host=$(echo $decodeDockerJson | jq '.auths' | jq 'keys' | jq .[0])
-            username=$(echo $decodeDockerJson | jq ".auths.$host.username" | tr -d '"')
-            password=$(echo $decodeDockerJson | jq ".auths.$host.password" | tr -d '"')
-            host=$(echo $host | tr -d '"')
-            docker login $host --username=$username --password=$password
-
             wget '{{ computenest::file::LYH-RAIN_quickstart-docker-compose-demo-docker-compose }}' -O /root/application/docker_compose.tar
             tar -xvf /root/application/docker_compose.tar -C /root/application
 
@@ -305,7 +302,7 @@ Resources:
             WantedBy=multi-user.target
             EOF
 
-            
+            echo 'Password=${Password}' >> /root/application/docker_compose/.env
             systemctl start docker-compose-app
           - RegionId:
               Ref: ALIYUN::Region
@@ -346,4 +343,9 @@ Metadata:
           - VSwitchCidrBlock
         Label:
           default: 可用区配置
+      - Parameters:
+          - Password
+        Label:
+          en: Software Configuration
+          zh-cn: 软件配置
       
