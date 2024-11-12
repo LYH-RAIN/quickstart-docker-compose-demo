@@ -36,14 +36,14 @@ Artifact:
       Url: 'resources/artifact_resources/docker_compose.tar'
   Artifact_2:
     ArtifactType: AcrImage
-    ArtifactName: halo-halo
+    ArtifactName: AcrImage-halo-halo
     ArtifactProperty:
       RepoName: ${AcrImageBuilder.AcrImage_1.RepoName}
       Tag: ${AcrImageBuilder.AcrImage_1.Tag}
       RepoType: Public
   Artifact_3:
     ArtifactType: AcrImage
-    ArtifactName: postgres
+    ArtifactName: AcrImage-postgres
     ArtifactProperty:
       RepoName: ${AcrImageBuilder.AcrImage_2.RepoName}
       Tag: ${AcrImageBuilder.AcrImage_2.Tag}
