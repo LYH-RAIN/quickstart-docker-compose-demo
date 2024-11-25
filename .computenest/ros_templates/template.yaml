@@ -151,6 +151,11 @@ Parameters:
       en: Zone ID
       zh-cn: 可用区ID
     AssociationProperty: ALIYUN::ECS::Instance::ZoneId
+    AssociationPropertyMetadata:
+      DefaultValueStrategy: random
+      InstanceChargeType: ${PayType}
+      SystemDiskCategory: cloud_essd
+      InstanceType: ${EcsInstanceType}
   VpcId:
     Type: String
     Label:
@@ -163,6 +168,7 @@ Parameters:
         - ${VpcOption}
     Default: ''
     AssociationPropertyMetadata:
+      AutoSelectFirst: true
       Visible:
         Condition:
           Fn::Equals:
@@ -180,8 +186,9 @@ Parameters:
         - ExistingVPC
         - ${VpcOption}
     AssociationPropertyMetadata:
-      VpcId: VpcId
-      ZoneId: ZoneId
+      AutoSelectFirst: true
+      VpcId: ${VpcId}
+      ZoneId: ${ZoneId}
       Visible:
         Condition:
           Fn::Equals:
@@ -276,7 +283,7 @@ Resources:
             wget '{{ computenest::file::LYH-RAIN_quickstart-docker-compose-demo-docker-compose }}' -O /root/application/docker_compose.tar
             tar -xvf /root/application/docker_compose.tar -C /root/application
 
-            cat > /etc/systemd/system/docker-compose-app.service <<EOF
+            cat > /etc/systemd/system/quickstart-docker-compose-demo.service <<EOF
             [Unit]
             Description=Docker Compose Application Service
             Requires=docker.service
@@ -294,24 +301,26 @@ Resources:
             WantedBy=multi-user.target
             EOF
 
+            systemctl enable quickstart-docker-compose-demo
+
             
-            systemctl start docker-compose-app
+            systemctl start quickstart-docker-compose-demo
           - RegionId:
               Ref: ALIYUN::Region
-Outputs:
-  ServerAddress:
+Outputs: 
+  halo_address:
     Description:
-      en: ServerAddress.
-      zh-cn: 访问页面。
+      en: halo address.
+      zh-cn: halo 访问页面。
     Value:
       Fn::Sub:
         - http://${ServerAddress}:8090
         - ServerAddress:
             Fn::Select:
-            - 0
-            - Fn::GetAtt:
-              - InstanceGroup
-              - PublicIps
+              - 0
+              - Fn::GetAtt:
+                  - InstanceGroup
+                  - PublicIps
 Metadata:
   ALIYUN::ROS::Interface:
     ParameterGroups:
