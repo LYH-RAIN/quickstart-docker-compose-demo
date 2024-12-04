@@ -42,9 +42,9 @@ jobs:
         run: |
           params=()
           if [[ ! -z "$SERVICE_ID" ]]; then
-            params+=(--service-id "$SERVICE_ID")
+            params+=(--service_id "$SERVICE_ID")
           elif [[ ! -z "$SERVICE_NAME" ]]; then
-            params+=(--service-name "$SERVICE_NAME")
+            params+=(--service_name "$SERVICE_NAME")
           else
             echo "Error: Neither SERVICE_ID nor SERVICE_NAME is set."
             exit 1
