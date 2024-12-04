@@ -25,6 +25,7 @@ jobs:
             echo "Error: .computenest directory not found. Please import your service from the ComputeNest console."
             echo "Guide here: https://computenest.console.aliyun.com/service/create/cn-hangzhou"
             exit 1
+          fi
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v2
