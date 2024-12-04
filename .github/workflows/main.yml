@@ -1,7 +1,7 @@
 name: ComputeNest Production Deployment
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: 
   push:
     branches:
       - main
@@ -52,7 +52,7 @@ jobs:
             exit 1
           fi
 
-          computenest import "${params[@]}" || { echo 'Import failed'; exit 1; }
+          computenest-cli import "${params[@]}" || { echo 'Import failed'; exit 1; }
 
       - name: Output Result
         run: echo "Deployment completed."
