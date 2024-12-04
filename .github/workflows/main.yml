@@ -1,7 +1,7 @@
 name: ComputeNest Production Deployment
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -15,7 +15,6 @@ jobs:
       AK_SECRET: ${{ secrets.AK_SECRET }}
       SERVICE_ID: ${{ secrets.SERVICE_ID }}
       SERVICE_NAME: ${{ secrets.SERVICE_NAME }}
-      SECURITY_TOKEN: ${{ secrets.SECURITY_TOKEN }}
     steps:
       - uses: actions/checkout@v2
 
@@ -35,18 +34,17 @@ jobs:
       - name: Install ComputeNest CLI
         run: pip install computenest-cli
 
+      - name: Login to ComputeNest CLI
+        run: |
+          computenest-cli login --access_key_id "$AK_ID" --access_key_secret "$AK_SECRET"
+
       - name: Import Service using ComputeNest CLI
         run: |
-          params=(--access_key_id "$AK_ID" --access_key_secret "$AK_SECRET")
-
-          if [[ "$SECURITY_TOKEN" != "null" && -n "$SECURITY_TOKEN" ]]; then
-            params+=(--security_token "$SECURITY_TOKEN")
-          fi
-
+          params=()
           if [[ ! -z "$SERVICE_ID" ]]; then
-            params+=(--service_id "$SERVICE_ID")
+            params+=(--service-id "$SERVICE_ID")
           elif [[ ! -z "$SERVICE_NAME" ]]; then
-            params+=(--service_name "$SERVICE_NAME")
+            params+=(--service-name "$SERVICE_NAME")
           else
             echo "Error: Neither SERVICE_ID nor SERVICE_NAME is set."
             exit 1
