@@ -1,5 +1,5 @@
 Service:
-  RegionId: ap-southeast-1
+  RegionId: cn-hangzhou
   DeployType: ros
   OperationMetadata:
     StatusOperationConfigs:
@@ -9,19 +9,6 @@ Service:
           - Stop
           - Restart
     SupportBackup: true
-    ModifyParametersConfig:
-      - TemplateName: 单机版
-        Operation:
-          - Name: 变更ECS实例规格
-            Description: 变更ECS实例规格
-            Type: Custom
-            Parameters:
-              - EcsInstanceType
-          - Name: 变更ECS实例密码
-            Description: 变更ECS实例密码
-            Type: Custom
-            Parameters:
-              - InstancePassword
   DeployMetadata:
     SupplierDeployMetadata:
       FileArtifactRelation:
@@ -45,7 +32,7 @@ Artifact:
     ArtifactType: File
     ArtifactName: LYH-RAIN_quickstart-docker-compose-demo-docker-compose
     ArtifactProperty:
-      RegionId: ap-southeast-1
+      RegionId: cn-hangzhou
       Url: 'resources/artifact_resources/docker_compose.tar'
   Artifact_2:
     ArtifactType: AcrImage
