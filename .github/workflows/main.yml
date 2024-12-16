@@ -13,8 +13,8 @@ jobs:
     env: 
       AK_ID: ${{ secrets.AK_ID }}
       AK_SECRET: ${{ secrets.AK_SECRET }}
-      SERVICE_ID: ${{ secrets.SERVICE_ID }}
       SERVICE_NAME: ${{ secrets.SERVICE_NAME }}
+      REGION_ID: ${{ secrets.REGION_ID || 'cn-hangzhou' }}
     steps:
       - uses: actions/checkout@v2
 
@@ -34,6 +34,13 @@ jobs:
       - name: Install ComputeNest CLI
         run: pip install computenest-cli
 
+      - name: Validate REGION_ID
+        run: |
+          if [[ "$REGION_ID" != "ap-southeast-1" && "$REGION_ID" != "cn-hangzhou" ]]; then
+            echo "Error: Invalid REGION_ID value. Only 'ap-southeast-1' and 'cn-hangzhou' are allowed."
+            exit 1
+          fi
+
       - name: Login to ComputeNest CLI
         run: |
           computenest-cli login --access_key_id "$AK_ID" --access_key_secret "$AK_SECRET"
@@ -41,12 +48,11 @@ jobs:
       - name: Import Service using ComputeNest CLI
         run: |
           params=()
-          if [[ ! -z "$SERVICE_ID" ]]; then
-            params+=(--service_id "$SERVICE_ID")
-          elif [[ ! -z "$SERVICE_NAME" ]]; then
+          if [[ ! -z "$SERVICE_NAME" ]]; then
             params+=(--service_name "$SERVICE_NAME")
+            params+=(--region_id "$REGION_ID")
           else
-            echo "Error: Neither SERVICE_ID nor SERVICE_NAME is set."
+            echo "Error: SERVICE_NAME is not set."
             exit 1
           fi
 
