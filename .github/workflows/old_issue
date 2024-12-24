@@ -1,0 +1,24 @@
+name: Cleanup Old Issues
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每天运行一次
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close stale issues
+        uses: actions/stale@v8
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          stale-issue-message: |
+            此问题已标记为过期，因为长时间未响应。
+          close-issue-message: |
+            由于长时间未响应，此问题现已关闭。
+          days-before-stale: 30
+          days-before-close: 7
+          stale-label: 'stale'
+          close-label: 'closed'
+          exempt-issue-labels: 'pinned,important'
