@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Close stale issues
-        uses: actions/stale@v8
+        uses: actions/stale@v7
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           stale-issue-message: |
-            此问题已标记为过期，因为长时间未响应。
+            此 Issue 因长时间未有活动已被自动标记为过时。如果此 Issue 仍然有效，请在接下来 7 天内进行回复，否则将被自动关闭。
           close-issue-message: |
-            由于长时间未响应，此问题现已关闭。
+            此 Issue 已因长时间未有活动而自动关闭。如有需要，请重新打开或创建新的 Issue。
           days-before-stale: 30
           days-before-close: 7
           stale-label: 'stale'
