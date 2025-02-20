@@ -1,13 +1,10 @@
-Arch: EcsSingle
+RuntimeType: Container
 ServiceType: private
-AllowedRegions:
-- cn-hangzhou
-- cn-shanghai
-- cn-beijing
 ArtifactSourceType: DockerCompose
-DockerFilePath: dockerfile
-DockerComposeYamlPath: docker-compose.yaml
+ServiceBuildRegion: ap-southeast-1
 RepoName: LYH-RAIN/quickstart-docker-compose-demo
+RegionId: cn-hangzhou
+DockerComposeYamlPath: docker-compose.yaml
 Owner: LYH-RAIN
 Branch: master
 Platform: github

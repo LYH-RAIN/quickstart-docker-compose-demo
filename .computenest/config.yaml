@@ -1,5 +1,5 @@
 Service:
-  RegionId: 
+  RegionId: cn-hangzhou
   DeployType: ros
   OperationMetadata:
     StatusOperationConfigs:
@@ -29,7 +29,7 @@ Service:
           Url: 'ros_templates/template.yaml'
           ArchitectureDiagramUrl: 'resources/architecture/architecture.jpg'
           AllowedRegions:
-            - 
+            - ap-southeast-1
       ArtifactRelation:
         ecs_image_quickstart-docker-compose-demo:
           ArtifactId: ${Artifact.EcsImage.ArtifactId}
@@ -39,7 +39,7 @@ Service:
         Url: 'ros_templates/template.yaml'
         ArchitectureDiagramUrl: 'resources/architecture/architecture.jpg'
         AllowedRegions:
-          - 
+          - ap-southeast-1
   ServiceType: private
   ServiceInfo:
     # 英文版可以再配置Locale为en-US的服务信息
@@ -52,7 +52,7 @@ Artifact:
     ArtifactName: ecs_image_quickstart-docker-compose-demo
     Description: quickstart-docker-compose-demo EcsImage
     SupportRegionIds:
-        - 
+        - ap-southeast-1
     ArtifactBuildProperty:
       CodeRepo:
         Platform: github
