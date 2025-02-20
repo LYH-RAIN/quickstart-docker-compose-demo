@@ -8,7 +8,6 @@ ArtifactSourceType: DockerCompose
 DockerFilePath: dockerfile
 DockerComposeYamlPath: docker-compose.yaml
 RepoName: LYH-RAIN/quickstart-docker-compose-demo
-RegionId: cn-hangzhou
 Owner: LYH-RAIN
 Branch: master
 Platform: github

@@ -1,5 +1,5 @@
 Service:
-  RegionId: cn-hangzhou
+  RegionId: 
   DeployType: ros
   OperationMetadata:
     StatusOperationConfigs:
