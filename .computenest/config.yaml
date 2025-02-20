@@ -3,59 +3,70 @@ Service:
   DeployType: ros
   OperationMetadata:
     StatusOperationConfigs:
-      - TemplateName: '单机版'
+      - TemplateName: ECS单机版
         SupportOperations:
           - Start
           - Stop
           - Restart
     SupportBackup: true
+    ModifyParametersConfig:
+      - TemplateName: ECS单机版
+        Operation:
+          - Name: 变更ECS实例规格
+            Description: 变更ECS实例规格
+            Type: Custom
+            Parameters:
+              - EcsInstanceType
+          - Name: 变更ECS实例密码
+            Description: 变更ECS实例密码
+            Type: Custom
+            Parameters:
+              - InstancePassword
   DeployMetadata:
     SupplierDeployMetadata:
-      FileArtifactRelation:
-        '{{ computenest::file::LYH-RAIN_quickstart-docker-compose-demo-docker-compose }}':
-          ArtifactId: ${Artifact.Artifact_1.ArtifactId}
-          ArtifactVersion: ${Artifact.Artifact_1.ArtifactVersion}
+      SupplierTemplateConfigs:
+        - Name: ECS单机版
+          Url: 'ros_templates/template.yaml'
+          ArchitectureDiagramUrl: 'resources/architecture/architecture.jpg'
+          AllowedRegions:
+            - 
+      ArtifactRelation:
+        ecs_image_quickstart-docker-compose-demo:
+          ArtifactId: ${Artifact.EcsImage.ArtifactId}
+          ArtifactVersion: draft
     TemplateConfigs:
-      - Name: 单机版
+      - Name: ECS单机版
         Url: 'ros_templates/template.yaml'
+        ArchitectureDiagramUrl: 'resources/architecture/architecture.jpg'
         AllowedRegions:
-          - cn-hangzhou
-          - cn-shanghai
-          - cn-beijing
+          - 
   ServiceType: private
   ServiceInfo:
-    Locale: zh-CN
-    ShortDescription: docker compose deploy
-    Image: 'resources/icons/service_logo.png'
+    # 英文版可以再配置Locale为en-US的服务信息
+    - Locale: zh-CN
+      ShortDescription: demo
+      Image: 'resources/icons/service_logo.png'
 Artifact:
-  Artifact_1:
-    ArtifactType: File
-    ArtifactName: LYH-RAIN_quickstart-docker-compose-demo-docker-compose
-    ArtifactProperty:
-      RegionId: cn-hangzhou
-      Url: 'resources/artifact_resources/docker_compose.tar'
-  Artifact_2:
-    ArtifactType: AcrImage
-    ArtifactName: AcrImage-halo-halo
-    ArtifactProperty:
-      RepoName: ${AcrImageBuilder.AcrImage_1.RepoName}
-      Tag: ${AcrImageBuilder.AcrImage_1.Tag}
-      RepoType: Public
-  Artifact_3:
-    ArtifactType: AcrImage
-    ArtifactName: AcrImage-postgres
-    ArtifactProperty:
-      RepoName: ${AcrImageBuilder.AcrImage_2.RepoName}
-      Tag: ${AcrImageBuilder.AcrImage_2.Tag}
-      RepoType: Public
-AcrImageBuilder:
-  AcrImage_1:
-    BuildType: DockerRepo
-    DockerRepoUrl: registry.fit2cloud.com/halo/halo:2.16
-    RepoName: halo/halo
-    Tag: 2.16
-  AcrImage_2:
-    BuildType: DockerRepo
-    DockerRepoUrl: postgres:15.4
-    RepoName: postgres
-    Tag: 15.4
+  EcsImage:
+    ArtifactType: EcsImage
+    ArtifactName: ecs_image_quickstart-docker-compose-demo
+    Description: quickstart-docker-compose-demo EcsImage
+    SupportRegionIds:
+        - 
+    ArtifactBuildProperty:
+      CodeRepo:
+        Platform: github
+        Owner: LYH-RAIN
+        RepoName: LYH-RAIN/quickstart-docker-compose-demo
+        Branch: master
+      RegionId: ap-southeast-1
+      CommandType: RunShellScript
+      CommandContent: |-
+        mkdir -p /root/application
+        if [ -e "/root/code/halo2" ]; then cp -r "/root/code/halo2" "/root/application/"; fi
+        if [ -e "/root/code/db" ]; then cp -r "/root/code/db" "/root/application/"; fi
+        if [ -e "/root/code/docker-compose.yaml" ]; then cp -r "/root/code/docker-compose.yaml" "/root/application/"; fi
+        cd /root/application
+        sed -i 's/pull_policy: always/pull_policy: if_not_present/g' docker-compose.yaml
+        docker compose -f docker-compose.yaml build 
+        docker compose -f docker-compose.yaml pull 2>&1 | stdbuf -oL grep -viE 'Downloading|sha256|extracting|KiB|Downloaded' || true;

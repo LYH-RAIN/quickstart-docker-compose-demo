@@ -1,1 +1,14 @@
-{"ServiceType":"private","AllowedRegions":["cn-hangzhou","cn-shanghai","cn-beijing"],"ArtifactSourceType":"DockerCompose","RepoName":"LYH-RAIN/quickstart-docker-compose-demo","Arch":"EcsSingle","DockerComposeEnvPath":".env","RegionId":"cn-hangzhou","CustomParameters":"","DockerComposeYamlPath":"docker-compose.yaml"}
+Arch: EcsSingle
+ServiceType: private
+AllowedRegions:
+- cn-hangzhou
+- cn-shanghai
+- cn-beijing
+ArtifactSourceType: DockerCompose
+DockerFilePath: dockerfile
+DockerComposeYamlPath: docker-compose.yaml
+RepoName: LYH-RAIN/quickstart-docker-compose-demo
+RegionId: cn-hangzhou
+Owner: LYH-RAIN
+Branch: master
+Platform: github
